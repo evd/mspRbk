@@ -2,7 +2,7 @@
 /**
  * Loads system settings into build
  *
- * @package minishop2-rbk
+ * @package msprbk
  * @subpackage build
  */
 $settings = array();

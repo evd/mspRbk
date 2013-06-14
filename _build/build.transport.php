@@ -2,7 +2,7 @@
 /**
  * RBKMoney Plugin for MiniShop2 build script
  *
- * @package minishop2-rbk
+ * @package msprbk
  * @subpackage build
  */
 $mtime = microtime();

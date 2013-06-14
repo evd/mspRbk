@@ -1,8 +1,8 @@
 <?php
 /**
- * Settings English Lexicon Entries for miniShop2-RBK
+ * Settings English Lexicon Entries for mspRbk
  *
- * @package minishop2-rbk
+ * @package msprbk
  * @subpackage lexicon
  */
 
