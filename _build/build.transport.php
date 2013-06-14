@@ -12,10 +12,10 @@ $tstart = $mtime;
 set_time_limit(0);
 
 /* define package */
-define('PKG_NAME','miniShop2RBK');
+define('PKG_NAME','mspRbk');
 define('PKG_NAME_LOWER',strtolower(PKG_NAME));
 define('PKG_VERSION','1.0.0');
-define('PKG_RELEASE','beta1');
+define('PKG_RELEASE','beta2');
 define('PKG_NAME_LOWER_MINISHOP','minishop2');
 
 
