@@ -67,7 +67,9 @@ class RBK extends msPaymentHandler implements msPaymentInterface {
 
         $params['hash'] = $this->hash($params, 'request');
 
-        $link = $this->config['checkoutUrl'] . ((strpos($url, '?')===false)?'?':'&') . http_build_query($params);
+        $link = $this->config['checkoutUrl'];
+        $link.= ((strpos($link, '?') === false)?'?':'&') . http_build_query($params);
+
         return $link;
     }
 
@@ -114,7 +116,7 @@ class RBK extends msPaymentHandler implements msPaymentInterface {
 	 */
 	public function hash($params = array(), $type = 'request') {
 		$fields = array();
-		if ($action=='request') 
+		if ($type=='request')
 			$fields = array('eshopId','recipientAmount','recipientCurrency',
 							'user_email','serviceName','orderId','userFields');
 		else
