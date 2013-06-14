@@ -75,29 +75,25 @@ class RBK extends msPaymentHandler implements msPaymentInterface {
 
 	/* @inheritdoc} */
 	public function receive(msOrder $order, $params = array()) {
-		/* @var miniShop2 $miniShop2 */
-		$miniShop2 = $this->modx->getService('miniShop2');
 		//Check input parameters
 		if (!isset($params['eshopId'], $params['recipientAmount'], $params['recipientCurrency'], $params['paymentStatus'], $params['hash'])) {
-			$this->modx->log(modX::LOG_LEVEL_ERROR, '[miniShop2:RBK] Wrong payment request: Request: ' . print_r($params, 1));
-			return true;
+			return $this->paymentError('Wrong payment request', $params);
 		}
 		if ($this->hash($params, 'payment') != $params['hash']) {
-			$this->modx->log(modX::LOG_LEVEL_ERROR, '[miniShop2:RBK] Wrong hash: Request: ' . print_r($params, 1));
-			return true;
+            return $this->paymentError('Wrong hash', $params);
 		}
 		if ($params['eshopId'] != $this->config['eshopid']) {
-			$this->modx->log(modX::LOG_LEVEL_ERROR, '[miniShop2:RBK] Wrong eshopId: Request: ' . print_r($params, 1));
-			return true;
+            return $this->paymentError('Wrong eshopId', $params);
 		}
 		if ($params['recipientCurrency'] != $this->config['currency']) {
-			$this->modx->log(modX::LOG_LEVEL_ERROR, '[miniShop2:RBK] Wrong currency: Request: ' . print_r($params, 1));
-			return true;
+			return $this->paymentError('Wrong currency', $params);
 		}
 		if ($params['recipientAmount'] != $order->get('cost')) {
-			$this->modx->log(modX::LOG_LEVEL_ERROR, '[miniShop2:RBK] Wrong order cost: Request: ' . print_r($params, 1));
-			return true;
-		}
+			return $this->paymentError('Wrong order cost', $params);
+        }
+
+        /* @var miniShop2 $miniShop2 */
+        $miniShop2 = $this->modx->getService('miniShop2');
 
 		if ($params['paymentStatus']==5)
 			$miniShop2->changeOrderStatus($order->get('id'), 2); // Setting status "paid"
@@ -106,6 +102,7 @@ class RBK extends msPaymentHandler implements msPaymentInterface {
 
 		return true;
 	}
+
 
 	/**
 	 * Caclulate hash
@@ -131,4 +128,14 @@ class RBK extends msPaymentHandler implements msPaymentInterface {
 		$hashValues[] = $this->config['secret_key'];
 		return md5(implode('::', $hashValues));
 	}
+
+    /**
+     * @param string $text Text to log
+     * @param array $params Request parameters
+     * @return bool
+     */
+    public function paymentError($text, $params = array()) {
+        $this->modx->log(xPDO::LOG_LEVEL_ERROR, '[miniShop2:RBK] ' . $text . ' Request: ' . print_r($params, true));
+        return true;
+    }
 }
