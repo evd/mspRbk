@@ -95,6 +95,8 @@ class RBK extends msPaymentHandler implements msPaymentInterface {
         /* @var miniShop2 $miniShop2 */
         $miniShop2 = $this->modx->getService('miniShop2');
 
+        @$this->modx->context->key = 'mgr';
+
 		if ($params['paymentStatus']==5)
 			$miniShop2->changeOrderStatus($order->get('id'), 2); // Setting status "paid"
 		elseif ($params['paymentStatus']==4 && $this->modx->getOption('ms2_payment_rbk_cancel_order', null, false))
