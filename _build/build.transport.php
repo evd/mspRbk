@@ -31,8 +31,8 @@ $sources = array(
 	),
 	'source_core' => array(
 		'components/'.PKG_NAME_LOWER_MINISHOP.'/custom/payment/rbk.class.php',
-		'components/'.PKG_NAME_LOWER_MINISHOP.'/lexicon/en/rbk.inc.php',
-		'components/'.PKG_NAME_LOWER_MINISHOP.'/lexicon/ru/rbk.inc.php'
+		'components/'.PKG_NAME_LOWER_MINISHOP.'/lexicon/en/msp.rbk.inc.php',
+		'components/'.PKG_NAME_LOWER_MINISHOP.'/lexicon/ru/msp.rbk.inc.php'
 	)
 );
 
