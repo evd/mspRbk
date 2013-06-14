@@ -38,7 +38,7 @@ $tmp = array(
         ,'xtype' => 'textfield'
         ,'area' => 'ms2_payment'
     )
-    ,'ms2_payment_rkb_success_id' => array(
+    ,'ms2_payment_rbk_success_id' => array(
         'value' => ''
         ,'xtype' => 'numberfield'
         ,'area' => 'ms2_payment'
