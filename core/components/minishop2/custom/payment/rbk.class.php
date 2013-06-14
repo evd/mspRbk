@@ -29,56 +29,47 @@ class RBK extends msPaymentHandler implements msPaymentInterface {
 
 	/* @inheritdoc} */
 	public function send(msOrder $order) {
-		$successUrl = $cancelUrl = $this->modx->getOption('site_url');
-		$params = array(
-			'msorder' => $order->get('id')
-		);
-		$context = $order->get('context');
-		if ($id = $this->modx->getOption('ms2_payment_rbk_success_id', null, 0)) {
-			$successUrl = $this->modx->makeUrl($id, $context, $params, 'full');
-		}
-		if ($id = $this->modx->getOption('ms2_payment_rbk_cancel_id', null, 0)) {
-			$cancelUrl = $this->modx->makeUrl($id, $context, $params, 'full');
-		}
-
-		$params = array(
-			'eshopId' => $this->config['eshopid']
-			,'orderId' => $order->get('id')
-			,'serviceName' => $this->modx->lexicon('ms2_payment_rbk_service_name', array('num' => $order->get('id')))
-			,'recipientAmount' => $order->get('cost')
-			,'recipientCurrency' => $this->config['currency']
-			,'language' => $this->config['language']
-			,'successUrl' => $successUrl
-			,'failUrl' => $cancelUrl
-		);
-
-		/* @var msOrderProduct $item */
-		$i = 0;
-		if ($this->modx->getOption('ms2_payment_rbk_order_details', null, false)) {
-			$products = $order->getMany('Products');
-			foreach ($products as $item) {
-				/* @var msProduct $product */
-				if ($product = $item->getOne('Product')) {
-					$params["PurchaseItem_{$i}_Name"] = $product->get('pagetitle');
-					$params["PurchaseItem_{$i}_TotalPrice"] = $item->get('price')*$item->get('count');
-					$params["PurchaseItem_{$i}_Count"] = $item->get('count');
-					$i++;
-				}
-			}
-		}
-
-		$profile = $order->getOne('UserProfile');
-		if (isset($profile)) {
-			$params['user_email'] = $profile->get('email');
-		}
-
-		if (!empty($this->config['preference']))
-			$params['preference'] = $this->config['preference'];
-
-		$params['hash'] = $this->hash($params, 'request');
-		return $this->success('', array('redirect' => $this->config['checkoutUrl'] . ((strpos($url, '?')===false)?'?':'&') . http_build_query($params)));
+        $link = $this->getPaymentLink($order);
+		return $this->success('', array('redirect' => $link));
 	}
 
+    public function getPaymentLink(msOrder $order) {
+        $successUrl = $cancelUrl = $this->modx->getOption('site_url');
+        $params = array(
+            'msorder' => $order->get('id')
+        );
+        $context = $order->get('context');
+        if ($id = $this->modx->getOption('ms2_payment_rbk_success_id', null, 0)) {
+            $successUrl = $this->modx->makeUrl($id, $context, $params, 'full');
+        }
+        if ($id = $this->modx->getOption('ms2_payment_rbk_cancel_id', null, 0)) {
+            $cancelUrl = $this->modx->makeUrl($id, $context, $params, 'full');
+        }
+
+        $params = array(
+            'eshopId' => $this->config['eshopid']
+            ,'orderId' => $order->get('id')
+            ,'serviceName' => $this->modx->lexicon('ms2_payment_rbk_service_name', array('num' => $order->get('id')))
+            ,'recipientAmount' => $order->get('cost')
+            ,'recipientCurrency' => $this->config['currency']
+            ,'language' => $this->config['language']
+            ,'successUrl' => $successUrl
+            ,'failUrl' => $cancelUrl
+        );
+
+        $profile = $order->getOne('UserProfile');
+        if (isset($profile)) {
+            $params['user_email'] = $profile->get('email');
+        }
+
+        if (!empty($this->config['preference']))
+            $params['preference'] = $this->config['preference'];
+
+        $params['hash'] = $this->hash($params, 'request');
+
+        $link = $this->config['checkoutUrl'] . ((strpos($url, '?')===false)?'?':'&') . http_build_query($params);
+        return $link;
+    }
 
 	/* @inheritdoc} */
 	public function receive(msOrder $order, $params = array()) {
