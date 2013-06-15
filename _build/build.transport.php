@@ -77,6 +77,7 @@ $payment->set('id',1);
 $payment->set('name','RBK');
 $payment->set('active', 0);
 $payment->set('class', 'RBK');
+$payment->set('rank', 100);
 
 /* create payment vehicle */
 $attributes = array(
@@ -101,6 +102,12 @@ foreach($sources['source_core'] as $file) {
 		'target' => "return MODX_CORE_PATH . '{$dir}';"
 	));
 }
+
+$modx->log(modX::LOG_LEVEL_INFO,'Adding in PHP resolvers...');
+$vehicle->resolve('php',array(
+    'source' => $sources['resolvers'] . 'resolve.uninstall.php',
+));
+
 $builder->putVehicle($vehicle);
 unset($file, $attributes);
 
