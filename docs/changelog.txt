@@ -1,0 +1,21 @@
+Changelog for mspRbk.
+
+1.0.0 pl
+==============
+- Add docs
+- Set default language is ru in package
+- Remove settings and payment in uninstall
+- Update translation for settings
+- Refactor error reporting
+- Fix typo in setting key
+- Fix display goods in email
+
+1.0.0 beta2
+==============
+- Add support payment link
+- Rename lexicon files for miniShop 2.0.1 pl1
+- Rename package to mspRbk
+
+1.0.0 beta1
+==============
+- Initial release.
