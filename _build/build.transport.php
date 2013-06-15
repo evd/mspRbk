@@ -23,6 +23,7 @@ define('PKG_NAME_LOWER_MINISHOP','minishop2');
 $root = dirname(dirname(__FILE__)).'/';
 $sources = array(
 	'root' => $root,
+    'docs' => $root . 'docs/',
 	'build' => $root . '_build/',
 	'data' => $root . '_build/data/',
 	'resolvers' => $root . '_build/resolvers/',
@@ -110,6 +111,17 @@ $vehicle->resolve('php',array(
 
 $builder->putVehicle($vehicle);
 unset($file, $attributes);
+
+/* now pack in the license file, readme and setup options */
+$builder->setPackageAttributes(array(
+    'changelog' => file_get_contents($sources['docs'] . 'changelog.txt')
+    ,'license' => file_get_contents($sources['docs'] . 'license.txt')
+    ,'readme' => file_get_contents($sources['docs'] . 'readme.txt')
+    //'setup-options' => array(
+    //'source' => $sources['build'].'setup.options.php',
+    //),
+));
+$modx->log(modX::LOG_LEVEL_INFO,'Added package attributes and setup options.');
 
 /* zip up package */
 $modx->log(modX::LOG_LEVEL_INFO,'Packing up transport package zip...');
