@@ -34,7 +34,7 @@ $tmp = array(
         ,'area' => 'ms2_payment'
     )
     ,'ms2_payment_rbk_language' => array(
-        'value' => ''
+        'value' => 'ru'
         ,'xtype' => 'textfield'
         ,'area' => 'ms2_payment'
     )
