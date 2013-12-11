@@ -62,7 +62,10 @@ class RBK extends msPaymentHandler implements msPaymentInterface {
             $params['user_email'] = $profile->get('email');
         }
 
-        if (!empty($this->config['preference']))
+        $orderProperties = $order->get('properties');
+        if (isset($orderProperties['payments']['rbk']['preference']))
+            $params['preference'] = $orderProperties['payments']['rbk']['preference'];
+        elseif (!empty($this->config['preference']))
             $params['preference'] = $this->config['preference'];
 
         $params['hash'] = $this->hash($params, 'request');
