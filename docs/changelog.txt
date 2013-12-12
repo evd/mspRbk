@@ -1,5 +1,9 @@
 Changelog for mspRbk.
 
+1.1.0 pl
+==============
+- Add ability get payment preference from msOrder properties
+
 1.0.0 pl
 ==============
 - Add docs
